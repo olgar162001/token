@@ -17,9 +17,7 @@ function patient_registration(){
   // FormData object 
   var data = new FormData(form);
 
-  // If you want to add an extra field for the FormData
-  //data.append("CustomField", "This is some extra data, testing");
-
+  
   // disabled the submit button
   $("#btn").prop("disabled", true);
   $("#patient").trigger("reset");
@@ -86,4 +84,49 @@ function token_generation(id){
            }
                
        });
+}
+
+function appointement(){
+  $.ajax({    
+      type: "GET",
+      url: "appointementform.php",             
+      dataType: "html",                  
+      success: function(data){  
+        $("#content").empty();                  
+          $("#content").html(data); 
+         
+      }
+  });
+}
+
+function createAppointement(){
+  var form = $('#appointementform')[0];
+     
+// FormData object 
+var data = new FormData(form);
+
+
+// disabled the submit button
+$("#btn").prop("disabled", true);
+$("#patient").trigger("reset");
+
+$.ajax({
+    type: "POST",
+    enctype: 'multipart/form-data',
+    url: "createAppointement.php",
+    data: data,
+    processData: false,
+    contentType: false,
+    cache: false,
+    timeout: 800000,
+    success: function (data) {
+      if(data=1){
+        //window.location.href="vieworder.php";
+        $("#content").empty();
+        $("#content").load("viewappointement.php");
+      }else{
+        $("#error").html(data);
+      }
+    },
+});
 }
